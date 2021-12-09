@@ -36,4 +36,9 @@ end
        render json: @articles = YAML.load_file(Rails.root.join("db",'airtable.yml'))
 #       puts @articles.inspect
   end
+  def show
+      @one_articles = YAML.load_file(Rails.root.join("db",'airtable.yml'))
+      @one_articles.select! {|article| article["id"] == params[:id] }
+      render json: @one_articles
+    end
 end
