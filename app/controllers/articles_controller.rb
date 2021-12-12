@@ -20,10 +20,10 @@ class ArticlesController < ApplicationController
     end
     def index
 
-       render json: @articles = YAML.load_file(Rails.root.join("db",'airtable.yml'))
+       render json: @articles = YAML.load_file(Rails.root.join("db",'airtable_new.yml'))
     end
     def show
-      @one_article = YAML.load_file(Rails.root.join("db",'airtable.yml'))
+      @one_article = YAML.load_file(Rails.root.join("db",'airtable_new.yml'))
       @one_article.select! {|article| article["id"] == params[:id] }
       render json: @one_article
     end
