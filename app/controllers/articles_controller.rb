@@ -25,6 +25,6 @@ class ArticlesController < ApplicationController
     def show
       @one_article = YAML.load_file(Rails.root.join("db",'airtable_new.yml'))
       @one_article.select! {|article| article["id"] == params[:id] }
-      render json: @one_article
+      render json: @one_article[0]
     end
 end
