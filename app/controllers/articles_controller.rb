@@ -1,36 +1,51 @@
 require 'yaml'
 
 class ArticlesController < ApplicationController
-
-    before_action :cors_preflight_check
-    after_action :cors_set_access_control_headers
-
-    def cors_set_access_control_headers
-        headers['Access-Control-Allow-Origin'] = '*'
-        headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
-        headers['Access-Control-Request-Method'] = '*'
-        headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    end
-
-    def cors_preflight_check
-        headers['Access-Control-Allow-Origin'] = '*'
-        headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
-        headers['Access-Control-Request-Method'] = '*'
-        headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    end
+    skip_before_action :verify_authenticity_token
+#     before_action :cors_preflight_check
+#     after_action :cors_set_access_control_headers
+#
+#     def cors_set_access_control_headers
+#         headers['Access-Control-Allow-Origin'] = '*'
+#         headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+#         headers['Access-Control-Request-Method'] = '*'
+#         headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+#     end
+#
+#     def cors_preflight_check
+#         headers['Access-Control-Allow-Origin'] = '*'
+#         headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+#         headers['Access-Control-Request-Method'] = '*'
+#         headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+#     end
     def index
 
-       render json: @articles = YAML.load_file(Rails.root.join("db",'airtable_new.yml'))
+       render json: @articles = YAML.load_file(Rails.root.join("db",'airtable_new_copy.yml'))
     end
     def show
-      @one_article = YAML.load_file(Rails.root.join("db",'airtable_new.yml'))
+      @one_article = YAML.load_file(Rails.root.join("db",'airtable_new_copy.yml'))
       @one_article.select! {|article| article["id"] == params[:id] }
       render json: @one_article[0]
     end
     def create
         pp 'Inside Post'
-        @article = {:id => "1234567", :headLine => 'Rails is Omakase', :subHeadLine => 'Lorem ipsum'}
-        render json: @article
+#         post_req = raw_post()
+#         post_response = {:id => "1234567", :Headline => 'Vered'}
+        post_response = {:id => "reckTySjqh1234567"}
+#         pp params["Sub-headline"]
+#         render json: params
+        all_articles = YAML.load_file(Rails.root.join("db",'airtable_new_copy.yml'))
+        new_article = {
+        "id" => "reckTySjqh1234567",
+        "Headline"=> params[:Headline],
+         "Sub-headline"=>params["Sub-headline"],
+        }
+        all_articles << new_article
+#         pp all_articles
+        output = YAML.dump all_articles
+        File.write(Rails.root.join("db",'airtable_new_copy.yml'), output)
+
+        render json: post_response
 #         @article = params[:headline]
 #         json_response(@article, :created)
 #         pp 'POST'
