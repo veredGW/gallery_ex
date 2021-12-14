@@ -27,4 +27,17 @@ class ArticlesController < ApplicationController
       @one_article.select! {|article| article["id"] == params[:id] }
       render json: @one_article[0]
     end
+    def create
+        pp 'Inside Post'
+        @article = {:id => "1234567", :headLine => 'Rails is Omakase', :subHeadLine => 'Lorem ipsum'}
+        render json: @article
+#         @article = params[:headline]
+#         json_response(@article, :created)
+#         pp 'POST'
+#         pp params
+    end
+    def new
+#             pp 'POST'
+#             pp params
+    end
 end
